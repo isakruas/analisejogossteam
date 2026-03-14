@@ -1,0 +1,15 @@
+# Cache do Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# LibreOffice - arquivos de bloqueio
+.~lock.*#
+
+# Dataset completo (muito grande para o repositório)
+*.csv
+!data/amostra_20_jogos.csv
+data/formulas_validacao.txt
