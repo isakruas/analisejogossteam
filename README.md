@@ -4,11 +4,11 @@
 
 A Fun Corp., uma empresa de jogos em ascensão, deseja expandir suas operações para o mercado de jogos digitais. Para montar uma estratégia de expansão, realizou uma coleta de dados na Steam, uma das maiores plataformas de distribuição de jogos digitais do mundo.
 
-Este projeto utiliza a biblioteca `analisejogossteam`, desenvolvida como um módulo reutilizável em Python com orientação a objetos, para carregar e consultar os dados coletados. O programa responde a três perguntas:
+Este projeto utiliza a biblioteca `analisejogossteam`, desenvolvida como um módulo reutilizável em Python com orientação a objetos, para carregar e consultar os dados coletados. O programa responde a três perguntas sobre o conjunto de dados completo e sobre uma amostra de 20 jogos:
 
 1. Qual o percentual de jogos gratuitos e pagos na plataforma?
-2. Qual o ano com o maior número de novos jogos?
-3. Quais gêneros possuem a melhor recepção pela comunidade? (Pergunta própria, cruzando gêneros com avaliações positivas/negativas.)
+2. Qual o ano com o maior número de novos jogos? Em caso de empate, retorne uma lista com os anos empatados.
+3. Quais gêneros de jogos possuem a melhor recepção pela comunidade, considerando o percentual médio de avaliações positivas? (Pergunta própria.)
 
 ## Estrutura do Projeto
 
@@ -20,8 +20,7 @@ analisejogossteam/
 │   ├── banco_de_dados.py                  # Classe BaseDeDados (carga e consultas)
 │   └── excecoes.py                        # Exceções customizadas
 ├── data/
-│   ├── amostra_20_jogos.csv               # Amostra de 20 jogos aleatórios para testes
-│   └── formulas_validacao.txt             # Fórmulas do LibreOffice Calc para validação manual
+│   └── amostra_20_jogos.csv               # Amostra de 20 jogos aleatórios para testes
 ├── tests/
 │   ├── __init__.py
 │   └── test_analisejogossteam.py          # Testes automatizados (20 testes)
@@ -57,9 +56,8 @@ python3 main.py
 
 O programa irá:
 - Executar os 20 testes automatizados sobre a amostra de 20 jogos.
-- Verificar que os resultados da amostra conferem com os cálculos manuais.
-- Carregar o dataset completo (72.934 jogos).
-- Exibir as respostas e análises das três perguntas.
+- Carregar o dataset completo (72.934 jogos) e responder as três perguntas com análise discursiva.
+- Carregar a amostra de 20 jogos e responder as mesmas três perguntas, conferindo com os cálculos manuais.
 
 ## Como executar apenas os testes
 

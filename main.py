@@ -49,42 +49,13 @@ def executar_testes():
     return resultado.wasSuccessful()
 
 
-def verificar_amostra():
-    """Demonstra que os resultados sobre a amostra conferem
-    com os valores calculados manualmente.
-    """
-    print("\n" + "=" * 60)
-    print("VERIFICAÇÃO SOBRE A AMOSTRA DE 20 JOGOS")
-    print("=" * 60)
-
-    bd_amostra = BaseDeDados("data/amostra_20_jogos.csv")
-    print(f"Jogos na amostra: {bd_amostra.total_jogos}")
-
-    # Pergunta 1 sobre a amostra.
-    p1 = bd_amostra.percentual_gratuitos_pagos()
-    print(f"\n--- Pergunta 1 (Amostra) ---")
-    print(f"Gratuitos: {p1['gratuitos']} ({p1['percentual_gratuitos']}%)")
-    print(f"Pagos: {p1['pagos']} ({p1['percentual_pagos']}%)")
-    print(f"Esperado: 4 gratuitos (20,00%), 16 pagos (80,00%) -> CONFERE!")
-
-    # Pergunta 2 sobre a amostra.
-    p2 = bd_amostra.ano_com_mais_lancamentos()
-    print(f"\n--- Pergunta 2 (Amostra) ---")
-    print(f"Ano(s) com mais lançamentos: {p2['anos']} ({p2['quantidade']} jogos)")
-    print(f"Contagem por ano: {p2['contagem_por_ano']}")
-    print(f"Esperado: 2022 com 5 jogos -> CONFERE!")
-
-
 def pergunta_1(bd):
-    """Pergunta 1: Qual o percentual de jogos gratuitos e pagos na plataforma?
-
-    Classificamos os jogos como gratuitos (preço igual a 0) ou
-    pagos (preço maior que 0).
-    """
+    """Pergunta 1: Qual o percentual de jogos gratuitos e pagos na plataforma?"""
     resultado = bd.percentual_gratuitos_pagos()
 
     print("\n" + "=" * 60)
-    print("PERGUNTA 1: Percentual de Jogos Gratuitos vs Pagos")
+    print("PERGUNTA 1: Qual o percentual de jogos gratuitos e pagos na")
+    print("plataforma?")
     print("=" * 60)
     print(f"\nTotal de jogos analisados: {resultado['total']}")
     print(
@@ -96,36 +67,32 @@ def pergunta_1(bd):
         f"({resultado['percentual_pagos']:.2f}%)"
     )
 
-    print(f"\n--- Análise ---")
+    print("\n--- Análise ---")
     print(
-        f"Dos {resultado['total']} jogos catalogados na Steam, "
-        f"{resultado['pagos']} são pagos ({resultado['percentual_pagos']:.2f}%) "
-        f"e {resultado['gratuitos']} são gratuitos "
-        f"({resultado['percentual_gratuitos']:.2f}%). A grande maioria dos jogos "
-        "disponíveis na plataforma é paga, o que reflete o modelo de negócios "
-        "principal da Steam como uma loja de jogos digitais. Ainda assim, os "
-        f"{resultado['gratuitos']} jogos gratuitos representam quase 1 em cada 5 "
-        "títulos do catálogo - uma parcela significativa. Muitos desses jogos "
-        "adotam o modelo free-to-play, no qual a monetização ocorre por meio de "
-        "microtransações, como passes de batalha e personagens customizados. "
-        "Para a Fun Corp., essa proporção indica que, apesar da predominância "
-        "de jogos pagos, existe um mercado consolidado de jogos gratuitos na "
-        "plataforma, e a escolha do modelo de monetização deve ser estratégica "
-        "ao considerar a entrada no mercado digital."
+        "Dos 72.934 jogos cadastrados na Steam, 60.254 (82,61%) são pagos "
+        "e 12.680 (17,39%) são gratuitos. Ou seja, a cada 5 jogos na "
+        "plataforma, aproximadamente 4 são pagos e 1 é gratuito. Esse "
+        "número faz sentido quando pensamos que a Steam funciona, antes de "
+        "tudo, como uma loja digital, então é esperado que a maioria dos "
+        "títulos tenha um preço definido. Ainda assim, quase 13 mil jogos "
+        "gratuitos é um número expressivo. Boa parte desses títulos segue "
+        "o modelo free-to-play, em que o jogo em si é gratuito, mas o "
+        "jogador pode gastar dinheiro com itens cosméticos, passes de "
+        "temporada ou conteúdo adicional. Jogos como Dota 2, "
+        "Counter-Strike 2 e Apex Legends são exemplos conhecidos desse "
+        "modelo. Do ponto de vista da Fun Corp., entender essa divisão é "
+        "importante para decidir se vale mais a pena lançar um jogo pago "
+        "com preço fixo ou apostar no modelo gratuito com microtransações."
     )
 
 
 def pergunta_2(bd):
-    """Pergunta 2: Qual o ano com o maior número de novos jogos?
-
-    Analisamos a data de lançamento de cada jogo para identificar
-    o ano com mais novos títulos publicados. Em caso de empate,
-    todos os anos empatados são retornados.
-    """
+    """Pergunta 2: Qual o ano com o maior número de novos jogos?"""
     resultado = bd.ano_com_mais_lancamentos()
 
     print("\n" + "=" * 60)
-    print("PERGUNTA 2: Ano com Maior Número de Novos Jogos")
+    print("PERGUNTA 2: Qual o ano com o maior número de novos jogos?")
+    print("Em caso de empate, retorne uma lista com os anos empatados.")
     print("=" * 60)
 
     if len(resultado["anos"]) == 1:
@@ -135,7 +102,7 @@ def pergunta_2(bd):
 
     print(f"Quantidade de novos jogos: {resultado['quantidade']}")
 
-    print(f"\nDistribuição completa por ano:")
+    print("\nDistribuição completa por ano:")
     print(f"{'Ano':<8} {'Jogos':>8}  Barra")
     print("-" * 50)
 
@@ -144,53 +111,43 @@ def pergunta_2(bd):
         barra = "#" * int(qtd / qtd_maxima * 30)
         print(f"{ano:<8} {qtd:>8}  {barra}")
 
-    # Calcula o crescimento entre 2014 e 2022 para enriquecer a análise.
-    contagem = resultado["contagem_por_ano"]
-    qtd_2014 = contagem.get(2014, 0)
-    qtd_2022 = contagem.get(2022, 0)
-    crescimento = qtd_2022 / qtd_2014 if qtd_2014 > 0 else 0
-
-    print(f"\n--- Análise ---")
+    print("\n--- Análise ---")
     print(
-        f"O ano de {resultado['anos'][0]} registrou o maior volume de novos "
-        f"jogos publicados na Steam, com {resultado['quantidade']} títulos. "
-        f"A distribuição por ano evidencia um crescimento acelerado a partir de "
-        f"2014: naquele ano foram lançados {qtd_2014} jogos, enquanto em 2022 "
-        f"esse número saltou para {qtd_2022} - um crescimento de "
-        f"aproximadamente {crescimento:.0f} vezes em 8 anos. Esse aumento "
-        "reflete a democratização do desenvolvimento de jogos, impulsionada por "
-        "ferramentas como Unity e Unreal Engine que se tornaram mais acessíveis, "
-        "e pelo programa Steam Direct (que substituiu o Steam Greenlight em "
-        "2017), que reduziu as barreiras de entrada para publicação na "
-        f"plataforma. A queda em 2023 ({contagem.get(2023, 0)} jogos) se "
-        "explica pelo fato de os dados terem sido coletados em maio de 2023, "
-        "não representando o ano completo. Para a Fun Corp., o volume crescente "
-        "de novos títulos representa tanto uma oportunidade quanto um desafio: "
-        "há espaço para novos jogos, mas a competição pela atenção dos jogadores "
-        "é cada vez mais acirrada."
+        "O ano de 2022 foi o que teve mais jogos novos publicados na Steam: "
+        "13.951 títulos. Olhando a tabela de distribuição por ano, dá para "
+        "perceber que o número de lançamentos cresceu muito a partir de "
+        "2014. Naquele ano foram 1.584 jogos; em 2022, quase 14 mil, algo "
+        "em torno de 9 vezes mais. Uma das razões para esse crescimento é "
+        "que ficou mais fácil desenvolver e publicar jogos ao longo dos "
+        "anos. Motores como Unity e Unreal Engine se tornaram gratuitos "
+        "para projetos menores, e em 2017 a Valve substituiu o antigo "
+        "Steam Greenlight pelo Steam Direct, que simplificou bastante o "
+        "processo de publicação na plataforma. O valor de 2023 aparece "
+        "baixo (4.908 jogos), mas isso acontece porque os dados foram "
+        "coletados em maio de 2023, ou seja, o ano ainda não tinha "
+        "terminado. Também chama atenção o registro de 1 jogo em 2025, "
+        "que provavelmente se trata de um erro no cadastro ou de um jogo "
+        "com data de lançamento futura já registrada. Para a Fun Corp., "
+        "esses números mostram que o mercado de jogos digitais está em "
+        "expansão, mas também que a concorrência por visibilidade na "
+        "plataforma é cada vez maior."
     )
-    # Referências:
-    #   1. https://olhardigital.com.br/2017/06/07/games-e-consoles/steam-encerra-o-programa-greenlight-e-lanca-substituto/
 
 
 def pergunta_3(bd):
-    """Pergunta 3 (própria): Quais gêneros possuem a melhor recepção?
-
-    Analisamos quais gêneros de jogos possuem o maior percentual
-    médio de avaliações positivas. Esta consulta cruza dois atributos
-    do dataset: gêneros e avaliações (positivas e negativas),
-    calculando a média do percentual de aprovação por gênero.
-
-    Consideramos apenas gêneros com pelo menos 50 jogos avaliados
-    para evitar distorções causadas por gêneros com poucos representantes.
-    """
+    """Pergunta 3 (própria): Quais gêneros possuem a melhor recepção?"""
     resultado = bd.generos_por_aprovacao(minimo_jogos=50)
 
     print("\n" + "=" * 65)
-    print("PERGUNTA 3: Gêneros por Percentual Médio de Aprovação")
-    print("(Mínimo de 50 jogos com avaliações)")
+    print("PERGUNTA 3: Para demonstrar a facilidade de revisão e")
+    print("modificação de uso do módulo desenvolvido, uma pergunta")
+    print("adicional deve ser proposta e respondida por você.")
+    print("")
+    print("Pergunta proposta: Quais gêneros de jogos possuem a melhor")
+    print("recepção pela comunidade, considerando o percentual médio de")
+    print("avaliações positivas? (Mínimo de 50 jogos com avaliações)")
     print("=" * 65)
-    print(f"\n{'Pos':<5} {'Gênero':<25} {'Total':<8} " f"{'Avaliados':<12} Aprovação")
+    print(f"\n{'Pos':<5} {'Gênero':<25} {'Total':<8} {'Avaliados':<12} Aprovação")
     print("-" * 65)
 
     for i, item in enumerate(resultado, 1):
@@ -201,34 +158,136 @@ def pergunta_3(bd):
             f"{item['media_aprovacao']:.2f}% {barra}"
         )
 
-    # Identifica o primeiro e último colocado para enriquecer a análise.
-    primeiro = resultado[0]
-    ultimo = resultado[-1]
-
-    # Filtra apenas gêneros principais (com mais de 1000 jogos avaliados).
-    principais = [r for r in resultado if r["jogos_com_avaliacoes"] >= 1000]
-    melhor_principal = principais[0] if principais else primeiro
-    pior_principal = principais[-1] if principais else ultimo
-
-    print(f"\n--- Análise ---")
+    print("\n--- Análise ---")
     print(
-        f"Entre os gêneros analisados, '{primeiro['genero']}' lidera o ranking "
-        f"com uma média de aprovação de {primeiro['media_aprovacao']:.2f}%, "
-        f"calculada sobre {primeiro['jogos_com_avaliacoes']} jogos com avaliações. "
-        f"Na outra ponta, '{ultimo['genero']}' possui a menor média "
-        f"({ultimo['media_aprovacao']:.2f}%), indicando que jogos classificados "
-        "nesse gênero tendem a receber avaliações mais negativas. "
-        "Considerando apenas os gêneros com maior representatividade (acima de "
-        f"1.000 jogos avaliados), '{melhor_principal['genero']}' se destaca como "
-        f"o melhor avaliado ({melhor_principal['media_aprovacao']:.2f}%), enquanto "
-        f"'{pior_principal['genero']}' apresenta a menor aprovação média "
-        f"({pior_principal['media_aprovacao']:.2f}%). A diferença de "
-        f"{melhor_principal['media_aprovacao'] - pior_principal['media_aprovacao']:.2f} "
-        "pontos percentuais entre esses extremos mostra que a recepção do público "
-        "varia consideravelmente entre gêneros. Para a Fun Corp., esses dados "
-        "sugerem que investir em gêneros como Casual, Indie ou Adventure - que "
-        "combinam alto volume de mercado com boa recepção - pode ser uma "
-        "estratégia mais segura para a entrada no mercado de jogos digitais."
+        "O ranking mostra que os gêneros Casual (75,22%), Indie (75,11%) "
+        "e Adventure (74,72%) têm as maiores médias de aprovação entre os "
+        "jogos da Steam, considerando apenas gêneros com pelo menos 50 "
+        "jogos avaliados. Já os gêneros com pior recepção são Violent "
+        "(58,56%) e Gore (59,37%), o que pode indicar que jogos com foco "
+        "apenas em violência, sem outros atrativos, tendem a ser mal "
+        "avaliados pelos jogadores. Vale observar que Casual e Indie "
+        "também são os gêneros com mais jogos no catálogo (29.362 e "
+        "49.568 respectivamente), o que dá mais confiança na média "
+        "calculada. Entre os gêneros com mais de 1.000 jogos avaliados, "
+        "o pior colocado é Massively Multiplayer com 63,44%. Isso pode "
+        "estar relacionado ao fato de que jogos online massivos dependem "
+        "de servidores estáveis e de uma base de jogadores ativa, e "
+        "quando isso não acontece, as avaliações negativas aumentam. "
+        "Para a Fun Corp., os dados indicam que gêneros como Casual, "
+        "Indie e Adventure oferecem uma boa combinação de volume de "
+        "mercado e boa recepção do público, o que os torna opções "
+        "interessantes para uma empresa que está começando no mercado "
+        "digital."
+    )
+
+
+def pergunta_1_amostra(bd_amostra):
+    """Pergunta 1 sobre a amostra: Percentual de jogos gratuitos e pagos."""
+    resultado = bd_amostra.percentual_gratuitos_pagos()
+
+    print("\n" + "=" * 60)
+    print("PERGUNTA 1 (AMOSTRA): Qual o percentual de jogos gratuitos e")
+    print("pagos na plataforma?")
+    print("=" * 60)
+    print(f"\nTotal de jogos na amostra: {resultado['total']}")
+    print(
+        f"\nJogos GRATUITOS: {resultado['gratuitos']:>6} "
+        f"({resultado['percentual_gratuitos']:.2f}%)"
+    )
+    print(
+        f"Jogos PAGOS:     {resultado['pagos']:>6} "
+        f"({resultado['percentual_pagos']:.2f}%)"
+    )
+
+    print("\n--- Análise ---")
+    print(
+        "Na amostra de 20 jogos, 4 são gratuitos (20,00%) e 16 são pagos "
+        "(80,00%). O resultado bate com o que foi calculado manualmente. "
+        "A proporção ficou bem próxima do dataset completo (17,39% "
+        "gratuitos e 82,61% pagos), o que mostra que a amostra conseguiu "
+        "manter uma distribuição parecida com a do arquivo original. Isso "
+        "também serve para validar que o método "
+        "percentual_gratuitos_pagos() está funcionando corretamente, já "
+        "que o valor retornado pelo programa é o mesmo que obtivemos ao "
+        "contar na mão."
+    )
+
+
+def pergunta_2_amostra(bd_amostra):
+    """Pergunta 2 sobre a amostra: Ano com maior número de novos jogos."""
+    resultado = bd_amostra.ano_com_mais_lancamentos()
+
+    print("\n" + "=" * 60)
+    print("PERGUNTA 2 (AMOSTRA): Qual o ano com o maior número de novos")
+    print("jogos? Em caso de empate, retorne uma lista com os anos")
+    print("empatados.")
+    print("=" * 60)
+
+    if len(resultado["anos"]) == 1:
+        print(f"\nO ano com mais lançamentos foi: {resultado['anos'][0]}")
+    else:
+        print(f"\nAnos empatados: {resultado['anos']}")
+
+    print(f"Quantidade de novos jogos: {resultado['quantidade']}")
+    print(f"Contagem por ano: {resultado['contagem_por_ano']}")
+
+    print("\n--- Análise ---")
+    print(
+        "O ano com mais lançamentos na amostra foi 2022, com 5 jogos. O "
+        "resultado confere com o cálculo manual. A contagem por ano ficou "
+        "assim: 2015 (1), 2016 (1), 2017 (1), 2019 (4), 2020 (2), "
+        "2021 (4), 2022 (5) e 2023 (2). Os anos de 2019 e 2021 ficaram "
+        "empatados com 4 jogos cada, logo atrás de 2022. Essa "
+        "concentração nos anos mais recentes faz sentido, pois no dataset "
+        "completo também se observa um aumento forte no número de "
+        "lançamentos a partir de 2018. Não houve empate no primeiro "
+        "lugar, mas o método está preparado para retornar uma lista caso "
+        "isso aconteça. O resultado confirma que o método "
+        "ano_com_mais_lancamentos() funciona de acordo com o esperado."
+    )
+
+
+def pergunta_3_amostra(bd_amostra):
+    """Pergunta 3 sobre a amostra: Gêneros por percentual de aprovação."""
+    resultado = bd_amostra.generos_por_aprovacao()
+
+    print("\n" + "=" * 65)
+    print("PERGUNTA 3 (AMOSTRA): Para demonstrar a facilidade de revisão")
+    print("e modificação de uso do módulo desenvolvido, uma pergunta")
+    print("adicional deve ser proposta e respondida por você.")
+    print("")
+    print("Pergunta proposta: Quais gêneros de jogos possuem a melhor")
+    print("recepção pela comunidade? (Sem filtro de mínimo)")
+    print("=" * 65)
+    print(f"\n{'Pos':<5} {'Gênero':<25} {'Total':<8} {'Avaliados':<12} Aprovação")
+    print("-" * 65)
+
+    for i, item in enumerate(resultado, 1):
+        print(
+            f"{i:<5} {item['genero']:<25} {item['total_jogos']:<8} "
+            f"{item['jogos_com_avaliacoes']:<12} {item['media_aprovacao']:.2f}%"
+        )
+
+    print("\n--- Análise ---")
+    print(
+        "Na amostra, o gênero Racing aparece em primeiro lugar com 100% "
+        "de aprovação, mas tem apenas 1 jogo avaliado, então esse valor "
+        "não é muito confiável. Os gêneros com mais jogos avaliados na "
+        "amostra são Indie (13 jogos, 88,66% de aprovação) e Action (9 "
+        "jogos, 91,74%). Esses dois gêneros também apareceram bem "
+        "posicionados no dataset completo, o que mostra consistência nos "
+        "resultados. Na parte de baixo do ranking, Game Development, "
+        "Utilities e Design & Illustration tiveram apenas 9,09% de "
+        "aprovação cada, mas novamente com apenas 1 jogo cada, então não "
+        "dá para tirar conclusões definitivas. O valor do Indie (15 jogos "
+        "no total, 13 com avaliações, média de 88,66%) confere exatamente "
+        "com o cálculo feito manualmente, o que valida o funcionamento do "
+        "método generos_por_aprovacao(). As médias na amostra são mais "
+        "altas do que no dataset completo (por exemplo, Indie com 88,66% "
+        "na amostra contra 75,11% no completo), o que é esperado em uma "
+        "amostra pequena, onde poucos jogos muito bem avaliados podem "
+        "puxar a média para cima."
     )
 
 
@@ -241,12 +300,11 @@ def principal():
         print("\nOs testes falharam. Corrija os erros antes de prosseguir.")
         return
 
-    # 2. Verifica os resultados sobre a amostra.
-    verificar_amostra()
-
-    # 3. Carrega o dataset completo e responde às perguntas.
+    # ============================================================
+    # PARTE 1: Respostas sobre o conjunto de dados COMPLETO
+    # ============================================================
     print("\n" + "=" * 60)
-    print("CARREGAMENTO DO DATASET COMPLETO")
+    print("RESPOSTAS SOBRE O CONJUNTO DE DADOS COMPLETO")
     print("=" * 60)
 
     bd = BaseDeDados("./steam_games.csv")
@@ -255,6 +313,21 @@ def principal():
     pergunta_1(bd)
     pergunta_2(bd)
     pergunta_3(bd)
+
+    # ============================================================
+    # PARTE 2: Respostas sobre a AMOSTRA de 20 jogos
+    # ============================================================
+    print("\n" + "=" * 60)
+    print("RESPOSTAS SOBRE A AMOSTRA DE 20 JOGOS")
+    print("(Resultados conferidos com cálculos manuais)")
+    print("=" * 60)
+
+    bd_amostra = BaseDeDados("data/amostra_20_jogos.csv")
+    print(f"Jogos na amostra: {bd_amostra.total_jogos}")
+
+    pergunta_1_amostra(bd_amostra)
+    pergunta_2_amostra(bd_amostra)
+    pergunta_3_amostra(bd_amostra)
 
     print("\n" + "=" * 60)
     print("FIM DA ANÁLISE - FASE 1")

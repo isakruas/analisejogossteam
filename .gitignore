@@ -3,6 +3,9 @@ __pycache__/
 *.pyc
 *.pyo
 
+# Ambidente virtual
+.venv/
+
 # Jupyter Notebook
 .ipynb_checkpoints/
 
